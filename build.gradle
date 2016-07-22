@@ -1,0 +1,73 @@
+buildscript {
+    repositories {
+        maven {
+            url "http://repo1.maven.org/maven2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
+    }
+}
+
+plugins {
+    id 'java'
+    //id 'net.researchgate.release' version '2.4.0'
+    id 'eclipse'
+}
+
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+
+springBoot {
+	mainClass = "com.np.crm.app.Application"
+}
+
+  repositories {
+     maven {
+       url "http://repo1.maven.org/maven2/"
+     }
+     flatDir name: 'libs', dirs: "$rootProject.rootDir/libs"
+  }
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+	compile ('org.springframework.boot:spring-boot-starter-web:1.2.5.RELEASE') {
+    		exclude group:'ch.qos.logback', module:'logback-classic'
+	}
+	compile ("javax.servlet:jstl:1.2")
+	compile (":common:1.0.0")
+	compile ('org.apache.commons:commons-lang3:3.4')
+	compile ('com.lmax:disruptor:3.3.4')
+	compile ('commons-collections:commons-collections:3.2.2')
+	compile ('org.jboss.resteasy:jaxrs-api:2.2.2.GA')
+	// end baymax dependencies
+
+    // log
+    compile ('org.apache.logging.log4j:log4j-core:2.3')
+    compile ('org.slf4j:slf4j-api:1.7.19')
+    compile ('org.apache.logging.log4j:log4j-slf4j-impl:2.5')
+    // spring
+    compile ('org.springframework:spring-context:4.2.5.RELEASE')
+    compile ('org.springframework:spring-web:4.2.5.RELEASE')
+    compile ('org.springframework:spring-context-support:4.2.5.RELEASE')
+	compile ('com.google.code.spring-crypto-utils:spring-crypto-utils:1.4.0')
+    
+    
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat:1.3.3.RELEASE')
+	providedRuntime('org.apache.tomcat.embed:tomcat-embed-jasper:8.0.32')
+
+    // others
+    compile ('com.alibaba:fastjson:1.1.26')
+    // test
+    testCompile ('org.testng:testng:6.9.4')
+    testCompile('org.hamcrest:hamcrest-library:1.3')
+}
+
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
